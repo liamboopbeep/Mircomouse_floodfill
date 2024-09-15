@@ -1,21 +1,23 @@
-#include <iostream>
 #include <string>
 #include <vector>
 #include <queue>
-#include "API.h"
 #include <stack>
-using namespace std;
+
+
 #define UP 0
 #define	DOWN 1
 #define	LEFT 2
 #define	RIGHT 3
+
 const  int rows=16;
 const  int cols=16;
+
 typedef struct coor{
     int row;
     int col;
     int value;
 }coord;
+
 typedef struct cell_infos{
 	// variables for north,east,south,west walls
 	bool walls[4];
@@ -23,19 +25,22 @@ typedef struct cell_infos{
     int angle_update;
     bool dead=0;
 }cell_info;
+
 typedef struct wall_mazes{
 	cell_info cells[16][16];
 }wall_maze;
-void log(const std::string& text) {
-    std::cerr << text << std::endl;
-}
+
 bool isValid(int x, int y) {
     return (x >= 0 && x < rows && y >= 0 && y < cols);
 }
+
 wall_maze maze;
+
 const int dx[] = {1, -1, 0, 0};
 const int dy[] = {0, 0, -1, 1};
+
 std::queue<coord> myQueue; // 
+
 void init_arr(std::vector<std::vector<int>> &arr,int row,int col)
 {
     for(int i = 0 ;i<row;i++)
@@ -48,6 +53,7 @@ void init_arr(std::vector<std::vector<int>> &arr,int row,int col)
         arr.push_back(arr_row);
     }
 }
+
 void check_and_fill(std::vector<std::vector<int>> &arr,int row,int col,int value)
 {
     if(row<0 ||col<0||row>=arr.size()||col>=arr[0].size()||arr[row][col]!=-1)return;
@@ -56,6 +62,7 @@ void check_and_fill(std::vector<std::vector<int>> &arr,int row,int col,int value
     myQueue.push(point);
     arr[row][col]=value;
 }
+
 void init_flood(std::vector<std::vector<int>> &arr,int row,int col)
 {
    
@@ -83,6 +90,7 @@ while (!myQueue.empty()) {
     
     
 }
+
 void init_flood_start(std::vector<std::vector<int>> &arr,int row_,int col_,int back_=0)
 {
     
@@ -98,7 +106,6 @@ void init_flood_start(std::vector<std::vector<int>> &arr,int row_,int col_,int b
             }
            
         }
-        //  if(back_==2)std::cerr<<""<<std::endl;
     }
     if(back_!=1)
     {
@@ -129,11 +136,12 @@ void init_flood_start(std::vector<std::vector<int>> &arr,int row_,int col_,int b
           }
         //   std::cerr<<"size:"<<myQueue.size()<<std::endl;
           if(myQueue.size()>120){
-            log("fulllll");
             break;
           }
     } 
 }
+
+/*
 void update_wall_debug(std::vector<std::vector<int>> &arr)
 {
     char dir;
@@ -174,6 +182,8 @@ void update_wall_debug(std::vector<std::vector<int>> &arr)
         }
     }
 }
+*/
+
 bool check_wall_angle(cell_info cell,int &dir)
 {
     switch(cell.angle_update)
@@ -197,16 +207,14 @@ bool check_wall_angle(cell_info cell,int &dir)
     }
     return cell.walls[dir];
 }
+
 cell_info cell_direction_adjust(cell_info cell)
 {
-    //  std::cerr<<"A:"<<cell.angle_update<<"-L:";
     cell_info cell_new;
     cell_new=cell;
     for(int i=0;i<4;i++)
     {
         int ind = i;
-    // std::cerr<<cell.walls[i];
-    // std::cerr<<i<<"->";
     switch(cell.angle_update)
         {
             case 90:
@@ -226,17 +234,16 @@ cell_info cell_direction_adjust(cell_info cell)
                 else ind=2;
                 break;
         }
-        //  std::cerr<<ind<<"|";
         cell_new.walls[i]=cell.walls[ind]; 
     }  
     return cell_new;
 }
+
 void go_to_cell(int &angle_now,int dir)
 {
     switch(dir)
             {
                 case -1:
-                    log("not dir");
                     break;
                 case UP:
                     // log("forward");
@@ -270,6 +277,7 @@ void go_to_cell(int &angle_now,int dir)
                 angle_now += 360;
             }
 }
+
 coord get_min_neighbour(cell_info cell_wall,coord cur,std::vector<std::vector<int>> &arr,bool change_=0)
 {
     int min_neightbor=255;
@@ -282,7 +290,7 @@ coord get_min_neighbour(cell_info cell_wall,coord cur,std::vector<std::vector<in
                 ind=dir;
                 bool check_=cell_wall.walls[dir];
                 if(change_)check_=check_wall_angle(cell_wall,ind);
-                // std::cerr << check_;
+				
                 if(isValid(newRow,newCol) && !check_)
                 { 
                     if(arr[newRow][newCol]<=min_neightbor)
@@ -296,6 +304,7 @@ coord get_min_neighbour(cell_info cell_wall,coord cur,std::vector<std::vector<in
             }
     return next_step;
 }
+
 void flood(std::stack<coord>& stack_flood,std::vector<std::vector<int>> &arr)
 {
     coord cur_stack;
@@ -322,12 +331,9 @@ void flood(std::stack<coord>& stack_flood,std::vector<std::vector<int>> &arr)
                     }
                 }
                 if(arr[cur_stack.row][cur_stack.col]!=0)arr[cur_stack.row][cur_stack.col]=min_neightbor+1;
-                // update_wall_debug(arr);
-                // log("added");
             }
             int stack_size=stack_flood.size();
             if(stack_size>=35){
-                log("full stack");
                 for(int i=0;i<stack_size;i++)
                 {
                     stack_flood.pop();
@@ -336,6 +342,7 @@ void flood(std::stack<coord>& stack_flood,std::vector<std::vector<int>> &arr)
             }
         }
 }
+
 cell_info update_walls(int angle_now,int row,int col)
 {
     cell_info new_cell;
@@ -349,7 +356,6 @@ cell_info update_walls(int angle_now,int row,int col)
     maze.cells[row][col]=cell_direction_adjust(new_cell);
     if(new_cell.walls[UP]==1&&new_cell.walls[LEFT]==1&&new_cell.walls[RIGHT]==1&&row!=0&&col!=0)
     {
-        log("dead");
          maze.cells[row][col].dead=1;
     }
     for(int i=0;i<4;i++)
@@ -365,6 +371,7 @@ cell_info update_walls(int angle_now,int row,int col)
     }
     return new_cell;
 }
+
 coord floodfill(coord start,coord dest,std::vector<std::vector<int>> &arr,int &angle_now)
 {
     std::queue<coord>path_queue;
@@ -393,7 +400,6 @@ coord floodfill(coord start,coord dest,std::vector<std::vector<int>> &arr,int &a
             path_distance_value_find++; 
         }
         else{
-            log("empty Queue- break");
             break;
         }
         // std::cerr<<"cur:"<<cur.value<<"-dest:"<<dest.value<<std::endl;
@@ -405,6 +411,7 @@ coord floodfill(coord start,coord dest,std::vector<std::vector<int>> &arr,int &a
     coord p_return={next_step.row,next_step.col,0};
     return p_return;
 }          
+
 void init_maze()
 {
     for(int i =0;i<16;i++)
@@ -418,6 +425,7 @@ void init_maze()
         }
     }
 }
+
 void go_to_cell_shorted(int &angle,int dir)
 {
     int new_dir=dir;
@@ -442,6 +450,7 @@ void go_to_cell_shorted(int &angle,int dir)
         }
     go_to_cell(angle,new_dir);
 }
+
 void shorted_path_go(std::vector<std::vector<int>> &arr,int angle_now,coord start,coord dest)
 {
    
@@ -475,14 +484,11 @@ void shorted_path_go(std::vector<std::vector<int>> &arr,int angle_now,coord star
                 cur.row=save_row;
                 cur.col=save_col;
                 next_dir_path.push(next_dir);
-                API::setColor(save_row,save_col,'g');
-                API::setText(save_row,save_col,std::to_string(arr[save_row][save_col]));
             }
     }
 }
     
-
- int main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	std::vector<std::vector<int>>arr;
     init_arr(arr,rows,cols);
@@ -491,22 +497,15 @@ void shorted_path_go(std::vector<std::vector<int>> &arr,int angle_now,coord star
     // test_maze()
     coord start={0,0,arr[0][0]};
     coord dest={7,7,arr[7][7]};
-    API::setColor(0,0,'r');
-    API::setColor(7,7,'r');
-    API::setText(0,0,"Start");
-    API::setText(7,7,"Goal");
-    update_wall_debug(arr);
+    //update_wall_debug(arr);
     int angle_now=90;
     coord new_coord;
     new_coord=floodfill(start,dest,arr,angle_now);
     init_flood_start(arr,0,0,1);
     // update_wall_debug(arr);
-    std::cerr<<"done2"<<std::endl;
     new_coord=floodfill(new_coord,start,arr,angle_now);
     init_flood_start(arr,7,7,2);
-    // update_wall_debug(arr);
-   
     shorted_path_go(arr,angle_now,new_coord,dest);
-
+	return 0;
 }   
 
