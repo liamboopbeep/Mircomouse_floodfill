@@ -7,6 +7,7 @@
 #include "..\statemachine\statemachine.cpp"
 #include "..\statemachine\statemachine_simplified.cpp"
 #include "mouse.cpp"
+
 using namespace std;
 
 #define UP 0
@@ -552,50 +553,49 @@ void set_dir(int _dir) {
     return;
   }
   if (_dir == (mouse.direction + 1) % 4) {
-    turn_right();
+    mouse.turn_right();
     return;
   }
   if (_dir == (mouse.direction + 2) % 4) {
-    turn_around();
+    mouse.turn_around();
     return;
   }
-  turn_left();
+  mouse.turn_left();
   return;
 }
 
-int past_dir;
-int turn_toward(int save_row, int save_col, int &cur_direction) {
-  int _dir = cur_direction;
-  if (cur_position[0] == save_row) {
-    if (cur_position[1] - save_col == 1) {
+int turn_toward(int save_row, int save_col) {
+  int _dir = mouse.direction;
+  if (mouse.x == save_row) {
+    if (mouse.y - save_col == 1) {
       _dir = 2;
     } else {
       _dir = 0;
     }
   } else {
-    if (cur_position[0] - save_row == 1) {
+    if (mouse.x - save_row == 1) {
       _dir = 3;
     } else {
       _dir = 1;
     }
   }
-  past_dir = cur_direction;
+  mouse.prev_direction = mouse.direction;
   set_dir(_dir);
   return _dir;
 }
 
-void exec_shortest_path(std::queue<pair<int, int>> shortest_path, int &cur_direction) {
+void exec_shortest_path(std::queue<pair<int, int>> shortest_path) {
   while (!shortest_path.empty()) {
-    turn_toward(shortest_path.front().first, shortest_path.front().second, cur_direction);
+    turn_toward(shortest_path.front().first, shortest_path.front().second);
     shortest_path.pop();
-    if (cur_direction - past_dir == 1 || cur_direction - past_dir == -3) {
+    if (mouse.direction - mouse.prev_direction == 1 || mouse.direction - mouse.prev_direction == -3) {
       robot_commands += "R";
-      move_forward();
-    } else if (cur_direction - past_dir == -1 || cur_direction - past_dir == 3) {
+      mouse.move_forward();
+    } else if (mouse.direction - mouse.prev_direction == -1 || mouse.direction - mouse.prev_direction == 3) {
       robot_commands += "L";
-      move_forward();
+      mouse.move_forward();
     } else {
-      move_forward();
+      mouse.move_forward();
       robot_commands += "F";
     }
   }
@@ -627,7 +627,7 @@ void start_path_finding(int min_goal_x, int min_goal_y) {
   init_flood_start(arr, min_goal_x, min_goal_y, 2);
   API::turnLeft();
   API::turnLeft();
-  exec_shortest_path(shorted_path_go(arr, angle_now, new_coord, dest), cur_direction);
+  exec_shortest_path(shorted_path_go(arr, angle_now, new_coord, dest));
   std::cerr << robot_commands << endl;
 }
 

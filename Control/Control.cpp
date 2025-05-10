@@ -1,30 +1,7 @@
 #include "Control.h"
+#include "..\src\mouse.cpp"
 
-bool wallFront() {
-  // Your wall detection logic here
-}
-
-bool wallRight() {
-  // Your wall detection logic here
-}
-
-bool wallLeft() {
-  // Your wall detection logic here
-}
-
-void moveForward() {
-  // Basic forward movement
-}
-
-void turnRight() {
-  // Turn right logic
-}
-
-void turnLeft() {
-  // Turn left logic
-}
-
-void FWD(float x) {
+void FWD(int x) {
   // Move forward scaled by x
 }
 
@@ -44,7 +21,7 @@ void SS180R() {
   // Snap spin 180° right
 }
 
-void DIA(float x) {
+void DIA(int x) {
   // Diagonal move scaled by x
 }
 

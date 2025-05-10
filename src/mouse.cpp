@@ -7,6 +7,7 @@ class Mouse {
         int x = 0;
         int y = 0;
         int direction = 0;
+        int prev_direction  = 0;
 
         void update_position(int &direction) {
             switch (direction) {

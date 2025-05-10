@@ -1,17 +1,7 @@
 #pragma once
 
-// Wall detection
-bool wallFront();
-bool wallRight();
-bool wallLeft();
-
-// Basic movement
-void moveForward();
-void turnRight();
-void turnLeft();
-
 // Forward movement with scaling
-void FWD(float x = 1.0);
+void FWD(int x = 1);
 
 // Snap Spins (90° and 180°)
 void SS90L();
