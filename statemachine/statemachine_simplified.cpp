@@ -1,9 +1,9 @@
 #include <string>
-#include "..\Control\Control.h"
+#include "..\src\mouse.cpp"
 
 enum class SimpleStates { st_init, ortho, ortho_L, ortho_R, st_stop };
 
-void simplestatemachine(const std::string& robot_commands) {
+void simplestatemachine(const std::string& robot_commands, Mouse mouse) {
     int x = 0;
     SimpleStates simple_current_st = SimpleStates::st_init;
 
@@ -21,12 +21,12 @@ void simplestatemachine(const std::string& robot_commands) {
                         break;
                     case SimpleStates::ortho_L:
                         simple_current_st = SimpleStates::ortho;
-                        SS90L();
+                        mouse.SS90L();
                         x = 2;
                         break;
                     case SimpleStates::ortho_R:
                         simple_current_st = SimpleStates::ortho;
-                        SS90R();
+                        mouse.SS90R();
                         x = 2;
                         break;
                     default:
@@ -38,17 +38,17 @@ void simplestatemachine(const std::string& robot_commands) {
                 switch (simple_current_st) {
                     case SimpleStates::ortho:
                         simple_current_st = SimpleStates::ortho_L;
-                        FWD(x);
+                        mouse.FWD(x);
                         break;
                     case SimpleStates::ortho_L:
                         simple_current_st = SimpleStates::ortho_L;
-                        SS90L();
-                        FWD(1);
+                        mouse.SS90L();
+                        mouse.FWD(1);
                         break;
                     case SimpleStates::ortho_R:
                         simple_current_st = SimpleStates::ortho_L;
-                        SS90R();
-                        FWD(1);
+                        mouse.SS90R();
+                        mouse.FWD(1);
                         break;
                     default:
                         break;
@@ -59,17 +59,17 @@ void simplestatemachine(const std::string& robot_commands) {
                 switch (simple_current_st) {
                     case SimpleStates::ortho:
                         simple_current_st = SimpleStates::ortho_R;
-                        FWD(x);
+                        mouse.FWD(x);
                         break;
                     case SimpleStates::ortho_R:
                         simple_current_st = SimpleStates::ortho_R;
-                        SS90R();
-                        FWD(1);
+                        mouse.SS90R();
+                        mouse.FWD(1);
                         break;
                     case SimpleStates::ortho_L:
                         simple_current_st = SimpleStates::ortho_R;
-                        SS90L();
-                        FWD(1);
+                        mouse.SS90L();
+                        mouse.FWD(1);
                         break;
                     default:
                         break;
@@ -83,17 +83,17 @@ void simplestatemachine(const std::string& robot_commands) {
                         break;
                     case SimpleStates::ortho:
                         simple_current_st = SimpleStates::st_stop;
-                        FWD(x);
+                        mouse.FWD(x);
                         break;
                     case SimpleStates::ortho_L:
                         simple_current_st = SimpleStates::st_stop;
-                        SS90L();
-                        FWD(1);
+                        mouse.SS90L();
+                        mouse.FWD(1);
                         break;
                     case SimpleStates::ortho_R:
                         simple_current_st = SimpleStates::st_stop;
-                        SS90R();
-                        FWD(1);
+                        mouse.SS90R();
+                        mouse.FWD(1);
                         break;
                     default:
                         break;

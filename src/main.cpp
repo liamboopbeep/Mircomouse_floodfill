@@ -634,5 +634,5 @@ void start_path_finding(int min_goal_x, int min_goal_y) {
 int main(int argc, char *argv[]) {
   start_path_finding(7, 7);
   //statemachine(robot_commands);
-  simplestatemachine(robot_commands);
+  simplestatemachine(robot_commands, mouse);
 }
