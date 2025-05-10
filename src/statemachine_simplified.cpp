@@ -1,5 +1,5 @@
 #include <string>
-#include <Control.cpp>
+#include "..\Control\Control.h"
 
 enum States {st_init, ortho, ortho_L, ortho_R,st_stop};
 

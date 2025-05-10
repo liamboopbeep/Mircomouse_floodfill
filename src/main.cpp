@@ -3,7 +3,9 @@
 #include <stack>
 #include <string>
 #include <vector>
-#include "API\API.h"
+#include "..\API\API.h"
+#include "statemachine.cpp"
+#include "statemachine_simplified.cpp"
 using namespace std;
 
 #define UP 0
