@@ -1,5 +1,4 @@
-#ifndef ROBOT_MOVEMENT_H
-#define ROBOT_MOVEMENT_H
+#pragma once
 
 // Wall detection
 bool wallFront();
@@ -37,4 +36,3 @@ void SD45L();
 void SD135L();
 void DD90L();
 
-#endif
