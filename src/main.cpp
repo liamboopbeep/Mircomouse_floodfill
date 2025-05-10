@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include "..\API\API.h"
-#include "statemachine.cpp"
-#include "statemachine_simplified.cpp"
+#include "..\statemachine\statemachine.cpp"
+#include "..\statemachine\statemachine_simplified.cpp"
 using namespace std;
 
 #define UP 0
@@ -600,7 +600,6 @@ void exec_shortest_path(std::queue<pair<int, int>> shortest_path, int &cur_direc
 }
 
 
-
 void start_path_finding(int min_goal_x, int min_goal_y) {
   std::vector<std::vector<int>> arr;
   init_arr(arr, rows, cols);
@@ -631,5 +630,6 @@ void start_path_finding(int min_goal_x, int min_goal_y) {
 
 int main(int argc, char *argv[]) {
   start_path_finding(7, 7);
-  statemachine();
+  statemachine(robot_commands);
+  //simplestatemachine(robot_commands);
 }
