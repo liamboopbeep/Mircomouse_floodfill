@@ -7,12 +7,10 @@
 enum States {st_init, ortho, ortho_L, ortho_R,st_stop};
 
 
-void simplestatemachine(){
+void simplestatemachine(std::string robot_commands){
     int x;
     States current_st = st_init;
-    char cmd;
     for (char cmd : robot_commands){
-        cmd = robot_commands[i];
         switch (cmd) {
             case 'F':
                 switch (current_st) {
