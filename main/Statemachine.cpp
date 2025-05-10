@@ -1,5 +1,5 @@
 #include <string>
-#include <Control.cpp>
+#include <API\Control.h>
 
 enum States {st_init, ortho, ortho_L, ortho_LL, ortho_R, ortho_RR, diag_LR, diag_RL, diag_RR,diag_LL,st_stop};
 
