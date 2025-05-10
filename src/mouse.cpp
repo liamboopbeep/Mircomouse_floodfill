@@ -1,5 +1,3 @@
-#pragma once
-
 #include "..\API\API.h"
 
 class Mouse {
