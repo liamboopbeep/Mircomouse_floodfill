@@ -1,13 +1,9 @@
 #include <string>
-#include <vector>
-#include <queue>
-#include <stack>
 #include <Control.cpp>
 
 enum States {st_init, ortho, ortho_L, ortho_R,st_stop};
 
-
-void simplestatemachine(std::string robot_commands){
+void simplestatemachine(const std::string& robot_commands){
     int x;
     States current_st = st_init;
     for (char cmd : robot_commands){

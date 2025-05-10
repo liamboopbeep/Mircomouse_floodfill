@@ -1,7 +1,4 @@
 #include <string>
-#include <vector>
-#include <queue>
-#include <stack>
 #include <Control.cpp>
 
 enum States {st_init, ortho, ortho_L, ortho_LL, ortho_R, ortho_RR, diag_LR, diag_RL, diag_RR,diag_LL,st_stop};
