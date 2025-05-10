@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "..\API\API.h"
-#include "..\statemachine\statemachine.cpp"
+//#include "..\statemachine\statemachine.cpp"
 #include "..\statemachine\statemachine_simplified.cpp"
 #include "mouse.cpp"
 

@@ -56,4 +56,47 @@ class Mouse {
             turn_right();
             // log("Around");
           }
+
+          void FWD(int x) {
+            move_forward(x);
+          }
+
+          void SS90R() {
+            turn_right();
+          }
+
+          void SS90L() {
+            turn_left();
+          }
+
+          void SS180R() {
+            turn_right();
+            move_forward();
+            turn_right();
+          }
+
+          void SS180L() {
+            turn_left();
+            move_forward();
+            turn_left();
+          }
+
+        //   void DIA(int x) {
+        //     // Diagonal move scaled by x
+        //   }
+
+        //   // Diagonal Right
+        //   void DS45R() {}
+        //   void DS135R() {}
+        //   void SD45R() {}
+        //   void SD135R() {}
+        //   void DD90R() {}
+
+        //   // Diagonal Left
+        //   void DS45L() {}
+        //   void DS135L() {}
+        //   void SD45L() {}
+        //   void SD135L() {}
+        //   void DD90L() {}
+
 };
