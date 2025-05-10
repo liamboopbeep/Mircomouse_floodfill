@@ -1,13 +1,6 @@
-#include "..\API\API.h"
+#include "mouse.h"
 
-class Mouse {
-    public:
-        int x = 0;
-        int y = 0;
-        int direction = 0;
-        int prev_direction  = 0;
-
-        void update_position(int &direction) {
+        void Mouse::update_position(int& direction) {
             switch (direction) {
               case 0:  // NORTH
                 y += 1;
@@ -24,59 +17,58 @@ class Mouse {
             }
           }
 
-        void update_direction(int &direction, int turn_direction) {
+        void Mouse::update_direction(int& direction, int turn_direction) {
         direction = (direction + turn_direction) % 4;
             if (direction < 0) {
             direction += 4;
             }
         }
 
-        void move_forward(int dist = 1) {
+        void Mouse::move_forward(int dist) {
             API::moveForward(dist);
             update_position(direction);
             // log("foward");
           }
 
-          void turn_right() {
+          void Mouse::turn_right() {
             API::turnRight();
             update_direction(direction, 1);
             // log("Right");
           }
 
-          void turn_left() {
+          void Mouse::turn_left() {
             API::turnLeft();
             update_direction(direction, -1);
             // log("Left");
           }
 
-          void turn_around() {
+          void Mouse::turn_around() {
             turn_right();
             turn_right();
             // log("Around");
           }
 
-          void FWD(int x) {
+          void Mouse::FWD(int x) {
             move_forward(x);
           }
 
-          void SS90R() {
+          void Mouse::SS90R() {
             turn_right();
           }
 
-          void SS90L() {
+          void Mouse::SS90L() {
             turn_left();
           }
 
-          void SS180R() {
+          void Mouse::SS180R() {
             turn_right();
             move_forward();
             turn_right();
           }
 
-          void SS180L() {
+          void Mouse::SS180L() {
             turn_left();
             move_forward();
-            turn_left();
           }
 
         //   void DIA(int x) {
@@ -96,5 +88,3 @@ class Mouse {
         //   void SD45L() {}
         //   void SD135L() {}
         //   void DD90L() {}
-
-};

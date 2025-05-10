@@ -3,10 +3,11 @@
 #include <stack>
 #include <string>
 #include <vector>
+
 #include "..\API\API.h"
 //#include "..\statemachine\statemachine.cpp"
-#include "..\statemachine\statemachine_simplified.cpp"
-#include "mouse.cpp"
+#include "..\statemachine\statemachine_simplified.h"
+#include "mouse.h"
 
 using namespace std;
 
@@ -37,7 +38,6 @@ typedef struct wall_mazes {
   cell_info cells[rows][cols];
 } wall_maze;
 
-Mouse mouse;
 
 bool isValid(int x, int y) { return (x >= 0 && x < rows && y >= 0 && y < cols); }  // Check ô
 
@@ -373,6 +373,7 @@ cell_info update_walls(int angle_now, int row, int col) {
   }
   return new_cell;
 }
+
 coord floodfill(coord start, coord dest, std::vector<std::vector<int>> &arr, int &angle_now) {
   std::queue<coord> path_queue;
   path_queue.push(start);
@@ -548,7 +549,7 @@ std::string robot_commands;
 //   // log("Around");
 // }
 
-void set_dir(int _dir) {
+void set_dir(int _dir, Mouse& mouse) {
   if (_dir == mouse.direction) {
     return;
   }
@@ -564,7 +565,7 @@ void set_dir(int _dir) {
   return;
 }
 
-int turn_toward(int save_row, int save_col) {
+int turn_toward(int save_row, int save_col, Mouse& mouse) {
   int _dir = mouse.direction;
   if (mouse.x == save_row) {
     if (mouse.y - save_col == 1) {
@@ -580,13 +581,13 @@ int turn_toward(int save_row, int save_col) {
     }
   }
   mouse.prev_direction = mouse.direction;
-  set_dir(_dir);
+  set_dir(_dir, mouse);
   return _dir;
 }
 
-void exec_shortest_path(std::queue<pair<int, int>> shortest_path) {
+void exec_shortest_path(std::queue<pair<int, int>> shortest_path, Mouse& mouse) {
   while (!shortest_path.empty()) {
-    turn_toward(shortest_path.front().first, shortest_path.front().second);
+    turn_toward(shortest_path.front().first, shortest_path.front().second, mouse);
     shortest_path.pop();
     if (mouse.direction - mouse.prev_direction == 1 || mouse.direction - mouse.prev_direction == -3) {
       robot_commands += "R";
@@ -603,7 +604,7 @@ void exec_shortest_path(std::queue<pair<int, int>> shortest_path) {
 }
 
 
-void start_path_finding(int min_goal_x, int min_goal_y) {
+void start_path_finding(int min_goal_x, int min_goal_y, Mouse& mouse) {
   std::vector<std::vector<int>> arr;
   init_arr(arr, rows, cols);
   init_flood(arr, min_goal_x, min_goal_y);
@@ -627,12 +628,13 @@ void start_path_finding(int min_goal_x, int min_goal_y) {
   init_flood_start(arr, min_goal_x, min_goal_y, 2);
   API::turnLeft();
   API::turnLeft();
-  exec_shortest_path(shorted_path_go(arr, angle_now, new_coord, dest));
+  exec_shortest_path(shorted_path_go(arr, angle_now, new_coord, dest), mouse);
   std::cerr << robot_commands << endl;
 }
 
 int main(int argc, char *argv[]) {
-  start_path_finding(7, 7);
+  Mouse mouse;
+  start_path_finding(7, 7, mouse);
   //statemachine(robot_commands);
   simplestatemachine(robot_commands, mouse);
 }

@@ -1,9 +1,9 @@
 #include <string>
-#include "..\src\mouse.cpp"
+#include "statemachine_simplified.h"
 
 enum class SimpleStates { st_init, ortho, ortho_L, ortho_R, st_stop };
 
-void simplestatemachine(const std::string& robot_commands, Mouse mouse) {
+void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
     int x = 0;
     SimpleStates simple_current_st = SimpleStates::st_init;
 
