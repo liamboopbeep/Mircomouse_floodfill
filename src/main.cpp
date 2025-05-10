@@ -6,6 +6,7 @@
 #include "..\API\API.h"
 #include "..\statemachine\statemachine.cpp"
 #include "..\statemachine\statemachine_simplified.cpp"
+#include "mouse.cpp"
 using namespace std;
 
 #define UP 0
@@ -34,6 +35,8 @@ typedef struct cell_infos {
 typedef struct wall_mazes {
   cell_info cells[rows][cols];
 } wall_maze;
+
+Mouse mouse;
 
 bool isValid(int x, int y) { return (x >= 0 && x < rows && y >= 0 && y < cols); }  // Check ô
 
@@ -491,68 +494,68 @@ std::queue<pair<int, int>> shorted_path_go(std::vector<std::vector<int>> &arr, i
   return shortest_path;
 }
 
-/// @brief //////////////////////////////
-int cur_position[2] = {0, 0};
-int cur_direction = 0;
-void update_position(int &cur_direction) {
-  switch (cur_direction) {
-    case 0:  // NORTH
-      cur_position[1] += 1;
-      break;
-    case 1:  // EAST
-      cur_position[0] += 1;
-      break;
-    case 2:  // SOUTH
-      cur_position[1] -= 1;
-      break;
-    case 3:  // WEST
-      cur_position[0] -= 1;
-      break;
-  }
-}
+// int cur_position[2] = {0, 0};
+// int cur_direction = 0;
 
-void update_direction(int &cur_direction, int turn_direction) {
-  cur_direction = (cur_direction + turn_direction) % 4;
-  if (cur_direction < 0) {
-    cur_direction += 4;
-  }
-}
+// void update_position(int &cur_direction) {
+//   switch (cur_direction) {
+//     case 0:  // NORTH
+//       cur_position[1] += 1;
+//       break;
+//     case 1:  // EAST
+//       cur_position[0] += 1;
+//       break;
+//     case 2:  // SOUTH
+//       cur_position[1] -= 1;
+//       break;
+//     case 3:  // WEST
+//       cur_position[0] -= 1;
+//       break;
+//   }
+// }
+
+// void update_direction(int &cur_direction, int turn_direction) {
+//   cur_direction = (cur_direction + turn_direction) % 4;
+//   if (cur_direction < 0) {
+//     cur_direction += 4;
+//   }
+// }
 
 std::string robot_commands;
 
-void move_forward() {
-  API::moveForward();
-  update_position(cur_direction);
-  // log("foward");
-}
+// void move_forward() {
+//   API::moveForward();
+//   update_position(cur_direction);
+//   // log("foward");
+// }
 
-void turn_right() {
-  API::turnRight();
-  update_direction(cur_direction, 1);
-  // log("Right");
-}
+// void turn_right() {
+//   API::turnRight();
+//   update_direction(cur_direction, 1);
+//   // log("Right");
+// }
 
-void turn_left() {
-  API::turnLeft();
-  update_direction(cur_direction, -1);
-  // log("Left");
-}
+// void turn_left() {
+//   API::turnLeft();
+//   update_direction(cur_direction, -1);
+//   // log("Left");
+// }
 
-void turn_around() {
-  turn_right();
-  turn_right();
-  // log("Around");
-}
+// void turn_around() {
+//   turn_right();
+//   turn_right();
+//   // log("Around");
+// }
 
 void set_dir(int _dir) {
-  if (_dir == cur_direction) {
+  if (_dir == mouse.direction) {
     return;
   }
-  if (_dir == (cur_direction + 1) % 4) {
+  if (_dir == (mouse.direction + 1) % 4) {
     turn_right();
     return;
   }
-  if (_dir == (cur_direction + 2) % 4) {
+  if (_dir == (mouse.direction + 2) % 4) {
     turn_around();
     return;
   }
@@ -630,6 +633,6 @@ void start_path_finding(int min_goal_x, int min_goal_y) {
 
 int main(int argc, char *argv[]) {
   start_path_finding(7, 7);
-  statemachine(robot_commands);
-  //simplestatemachine(robot_commands);
+  //statemachine(robot_commands);
+  simplestatemachine(robot_commands);
 }
