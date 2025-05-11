@@ -53,6 +53,35 @@ void API::moveForward(int distance) {
     }
 }
 
+void API::moveForwardHalf(int distance) {
+    std::cout << "moveForwardHalf ";
+    // Don't print distance argument unless explicitly specified, for
+    // backwards compatibility with older versions of the simulator
+    if (distance != 1) {
+        std::cout << distance;
+    }
+    std::cout << std::endl;
+    std::string response;
+    std::cin >> response;
+    if (response != "ack") {
+        std::cerr << response << std::endl;
+        throw;
+    }
+}
+
+void API::turnRight45() {
+    std::cout << "turnRight45" << std::endl;
+    std::string ack;
+    std::cin >> ack;
+}
+
+void API::turnLeft45() {
+    std::cout << "turnLeft45" << std::endl;
+    std::string ack;
+    std::cin >> ack;
+}
+
+
 void API::turnRight() {
     std::cout << "turnRight" << std::endl;
     std::string ack;
