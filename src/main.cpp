@@ -47,24 +47,18 @@ const int dy[] = {0, 0, -1, 1};  // di chuyển bằng dy[i]
 std::queue<coord> myQueue;       // Bắt đầu queue
 
 void init_arr(std::vector<std::vector<int>> &arr, int row, int col) {
-  for (int i = 0; i < row; i++) {
-    std::vector<int> arr_row;
-    for (int j = 0; j < col; j++) {
-      arr_row.push_back(-1);  // đẩy giá trị -1 vào tất cả các ô
-    }
-    arr.push_back(arr_row);
-  }
+  arr.assign(row, std::vector<int>(col, -1));
 }
 
+
 void check_and_fill(std::vector<std::vector<int>> &arr, int row, int col, int value) {
-  if (row < 0 || col < 0 || row >= arr.size() || col >= arr[0].size() || arr[row][col] != -1) return;  // Nếu ngoài bảng hoặc bằng not filled return không thì +1
-  value += 1;
+  if (row < 0 || col < 0 || row >= arr.size() || col >= arr[0].size() || arr[row][col] != -1) return;
   coord point = {row, col, value};
   myQueue.push(point);
   arr[row][col] = value;
 }
 
-void init_flood(std::vector<std::vector<int>> &arr, int row, int col)  // row,col = 7
+void init_flood(std::vector<std::vector<int>> &arr, int row, int col)
 {
   int count_ = 0;
   coord point = {row, col, count_};
@@ -168,7 +162,7 @@ void update_wall_debug(std::vector<std::vector<int>> &arr) {
       }
       if (maze.cells[i][j].visited == true) {
         // log("blue");
-        API::setColor(i, j, 'G');  // g-green r-red b-Blue
+        API::setColor(i, j, 'g');  // g-green r-red b-Blue
 
       } else
         API::clearColor(i, j);  // g-green r-red b-Blue
