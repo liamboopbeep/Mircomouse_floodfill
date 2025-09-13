@@ -47,18 +47,24 @@ const int dy[] = {0, 0, -1, 1};  // di chuyển bằng dy[i]
 std::queue<coord> myQueue;       // Bắt đầu queue
 
 void init_arr(std::vector<std::vector<int>> &arr, int row, int col) {
-  arr.assign(row, std::vector<int>(col, -1));
+  for (int i = 0; i < row; i++) {
+    std::vector<int> arr_row;
+    for (int j = 0; j < col; j++) {
+      arr_row.push_back(-1);  // đẩy giá trị -1 vào tất cả các ô
+    }
+    arr.push_back(arr_row);
+  }
 }
 
-
 void check_and_fill(std::vector<std::vector<int>> &arr, int row, int col, int value) {
-  if (row < 0 || col < 0 || row >= arr.size() || col >= arr[0].size() || arr[row][col] != -1) return;
+  if (row < 0 || col < 0 || row >= arr.size() || col >= arr[0].size() || arr[row][col] != -1) return;  // Nếu ngoài bảng hoặc bằng not filled return không thì +1
+  value += 1;
   coord point = {row, col, value};
   myQueue.push(point);
   arr[row][col] = value;
 }
 
-void init_flood(std::vector<std::vector<int>> &arr, int row, int col)
+void init_flood(std::vector<std::vector<int>> &arr, int row, int col) //row,col = 7
 {
   int count_ = 0;
   coord point = {row, col, count_};
@@ -162,7 +168,7 @@ void update_wall_debug(std::vector<std::vector<int>> &arr) {
       }
       if (maze.cells[i][j].visited == true) {
         // log("blue");
-        API::setColor(i, j, 'g');  // g-green r-red b-Blue
+        API::setColor(i, j, 'G');  // g-green r-red b-Blue
 
       } else
         API::clearColor(i, j);  // g-green r-red b-Blue
@@ -250,24 +256,20 @@ void go_to_cell(int &angle_now, int dir) {
       log("not dir");
       break;
     case UP:
-      log("forward");
       API::moveForward();
       break;
     case DOWN:
-      log("Down");
       angle_now -= 180;
       API::turnRight();
       API::turnRight();
       API::moveForward();
       break;
     case LEFT:
-      log("Left");
       angle_now += 90;
       API::turnLeft();
       API::moveForward();
       break;
     case RIGHT:
-      log("right");
       angle_now -= 90;
       API::turnRight();
       API::moveForward();
@@ -276,7 +278,6 @@ void go_to_cell(int &angle_now, int dir) {
       break;
   }
   angle_now = angle_now % 360;
-  // Đảm bảo góc không bị âm
   if (angle_now < 0) {
     angle_now += 360;
   }
@@ -483,79 +484,32 @@ std::queue<pair<int, int>> shorted_path_go(std::vector<std::vector<int>> &arr, i
 
       next_dir_path.push(next_dir);
       API::setColor(save_row, save_col, 'g');
-      std::cerr << save_row << save_col << endl;
       API::setText(save_row, save_col, std::to_string(arr[save_row][save_col]));
+      std::cerr << "x:" << save_row << "-y:" << save_col << std::endl;
     }
   }
   return shortest_path;
 }
 
-// int cur_position[2] = {0, 0};
-// int cur_direction = 0;
-
-// void update_position(int &cur_direction) {
-//   switch (cur_direction) {
-//     case 0:  // NORTH
-//       cur_position[1] += 1;
-//       break;
-//     case 1:  // EAST
-//       cur_position[0] += 1;
-//       break;
-//     case 2:  // SOUTH
-//       cur_position[1] -= 1;
-//       break;
-//     case 3:  // WEST
-//       cur_position[0] -= 1;
-//       break;
-//   }
-// }
-
-// void update_direction(int &cur_direction, int turn_direction) {
-//   cur_direction = (cur_direction + turn_direction) % 4;
-//   if (cur_direction < 0) {
-//     cur_direction += 4;
-//   }
-// }
-
 std::string robot_commands;
-
-// void move_forward() {
-//   API::moveForward();
-//   update_position(cur_direction);
-//   // log("foward");
-// }
-
-// void turn_right() {
-//   API::turnRight();
-//   update_direction(cur_direction, 1);
-//   // log("Right");
-// }
-
-// void turn_left() {
-//   API::turnLeft();
-//   update_direction(cur_direction, -1);
-//   // log("Left");
-// }
-
-// void turn_around() {
-//   turn_right();
-//   turn_right();
-//   // log("Around");
-// }
 
 void set_dir(int _dir, Mouse& mouse) {
   if (_dir == mouse.direction) {
+    mouse.update_position();
     return;
   }
   if (_dir == (mouse.direction + 1) % 4) {
-    mouse.turn_right();
+    mouse.update_direction(1);
+    mouse.update_position();
     return;
   }
   if (_dir == (mouse.direction + 2) % 4) {
-    mouse.turn_around();
+    mouse.update_direction(2);
+    mouse.update_position();
     return;
   }
-  mouse.turn_left();
+  mouse.update_direction(-1);
+  mouse.update_position();
   return;
 }
 
@@ -583,22 +537,21 @@ void exec_shortest_path(std::queue<pair<int, int>> shortest_path, Mouse& mouse) 
   while (!shortest_path.empty()) {
     turn_toward(shortest_path.front().first, shortest_path.front().second, mouse);
     shortest_path.pop();
-    if (mouse.direction - mouse.prev_direction == 1 || mouse.direction - mouse.prev_direction == -3) {
+
+    int diff = (mouse.direction - mouse.prev_direction + 4) % 4;
+    if (diff == 1) {
       robot_commands += "R";
-      mouse.move_forward();
-    } else if (mouse.direction - mouse.prev_direction == -1 || mouse.direction - mouse.prev_direction == 3) {
+    } else if (diff == 3) {
       robot_commands += "L";
-      mouse.move_forward();
-    } else {
-      mouse.move_forward();
-      robot_commands += "F";
     }
+    robot_commands += "F";
   }
   robot_commands += "S";
 }
 
 
 void start_path_finding(int min_goal_x, int min_goal_y, Mouse& mouse) {
+  //init
   std::vector<std::vector<int>> arr;
   init_arr(arr, rows, cols);
   init_flood(arr, min_goal_x, min_goal_y);
@@ -615,6 +568,8 @@ void start_path_finding(int min_goal_x, int min_goal_y, Mouse& mouse) {
   update_wall_debug(arr);
   int angle_now = 90;
   coord new_coord;
+  //init
+
   new_coord = floodfill(start, dest, arr, angle_now);
   init_flood_start(arr, 0, 0, 1);
   std::cerr << "done2" << std::endl;
@@ -630,5 +585,6 @@ int main(int argc, char *argv[]) {
   Mouse mouse;
   start_path_finding(7, 7, mouse);
   //statemachine(robot_commands);
+  API::ackReset();
   simplestatemachine(robot_commands, mouse);
 }

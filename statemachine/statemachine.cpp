@@ -1,5 +1,5 @@
 #include <string>
-#include "..\Control\Control.h"
+#include "statemachine.h"
 
 enum class States {
     st_init, ortho, ortho_L, ortho_R, st_stop, ortho_LL, ortho_RR, diag_LR, diag_RL, diag_RR, diag_LL

@@ -36,6 +36,10 @@ void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
 
             case 'L':
                 switch (simple_current_st) {
+                    case SimpleStates::st_init:
+                        simple_current_st = SimpleStates::ortho;
+                        mouse.turn_left();
+                        break;
                     case SimpleStates::ortho:
                         simple_current_st = SimpleStates::ortho_L;
                         mouse.FWD(x);
@@ -57,6 +61,11 @@ void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
 
             case 'R':
                 switch (simple_current_st) {
+                    case SimpleStates::st_init:
+                        simple_current_st = SimpleStates::ortho;
+                        mouse.turn_right();
+                        mouse.FWD(1);
+                        break;
                     case SimpleStates::ortho:
                         simple_current_st = SimpleStates::ortho_R;
                         mouse.FWD(x);

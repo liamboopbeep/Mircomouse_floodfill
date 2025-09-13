@@ -9,8 +9,8 @@ public:
     int direction = 0;
     int prev_direction  = 0;
 
-    void update_position(int& direction);
-    void update_direction(int& direction, int turn_direction);
+    void update_position();
+    void update_direction(int turn_direction);
     void move_forward(int dist = 1);
     void turn_right();
     void turn_left();
