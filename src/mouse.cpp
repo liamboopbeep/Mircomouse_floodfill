@@ -1,46 +1,65 @@
 #include "mouse.h"
+#include <iostream>
 
-        void Mouse::update_position() {
+        void Mouse::update_position(float dist) {
             switch (direction) {
-              case 0:  // NORTH
-                y += 1;
+              case 90:  // NORTH
+                y += dist;
                 break;
-              case 1:  // EAST
-                x += 1;
+              case 0:  // EAST
+                x += dist;
                 break;
-              case 2:  // SOUTH
-                y -= 1;
+              case 270:  // SOUTH
+                y -= dist;
                 break;
-              case 3:  // WEST
-                x -= 1;
+              case 180:  // WEST
+                x -= dist;
                 break;
             }
           }
 
         void Mouse::update_direction(int turn_direction) {
-        direction = (direction + turn_direction) % 4;
+        direction = (direction + turn_direction) % 360;
             if (direction < 0) {
-            direction += 4;
+            direction += 360;
             }
         }
 
         void Mouse::move_forward(int dist) {
             API::moveForward(dist);
-            update_position();
+            update_position(dist);
             // log("foward");
+          }
+
+        void Mouse::move_forward_half() {
+            API::moveForwardHalf();
+            update_position(0.5);
           }
 
           void Mouse::turn_right() {
             API::turnRight();
-            update_direction(1);
+            update_direction(-90);
             // log("Right");
           }
 
           void Mouse::turn_left() {
             API::turnLeft();
-            update_direction(-1);
+            update_direction(90);
             // log("Left");
           }
+
+          void Mouse::turn_right45() {
+            API::turnRight45();
+            update_direction(-45);
+            // log("Right");
+          }
+
+          void Mouse::turn_left45() {
+            API::turnLeft45();
+            update_direction(45);
+            // log("Left");
+          }
+
 
           void Mouse::turn_around() {
             turn_right();
@@ -49,34 +68,46 @@
           }
 
           void Mouse::FWD(int x) {
-            move_forward(x);
-            if (x > 1){
-              move_forward(x-1);
-              API::moveForwardHalf();
+            if (x == 1){
+              std::cerr << "FWD:" << x << std::endl;
+              move_forward();
+              return;
             }
+            std::cerr << "FWD:" << x << std::endl;
+            move_forward(x-1);
+            move_forward_half();
           }
 
           void Mouse::SS90R() {
-            API::turnRight45();
-            API::moveForwardHalf();
-            API::turnRight45();
+            std::cerr << "SS90R" << std::endl;
+            turn_right45();
+            move_forward_half();
+            turn_right45();
           }
 
           void Mouse::SS90L() {
-            API::turnLeft45();
-            API::moveForwardHalf();
-            API::turnRight45();
+            std::cerr << "SS90L" << std::endl;
+            turn_left45();
+            move_forward_half();
+            turn_left45();
           }
 
           void Mouse::SS180R() {
+            std::cerr << "SS180R" << std::endl;
+            turn_right45();
+            move_forward_half();
             turn_right();
-            move_forward();
-            turn_right();
+            move_forward_half();
+            turn_right45();
           }
 
           void Mouse::SS180L() {
+            std::cerr << "SS180L" << std::endl;
+            turn_left45();
+            move_forward_half();
             turn_left();
-            move_forward();
+            move_forward_half();
+            turn_left45();
           }
 
         //   void DIA(int x) {

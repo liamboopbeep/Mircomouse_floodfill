@@ -22,12 +22,12 @@ void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
                     case SimpleStates::ortho_L:
                         simple_current_st = SimpleStates::ortho;
                         mouse.SS90L();
-                        x = 2;
+                        x = 1;
                         break;
                     case SimpleStates::ortho_R:
                         simple_current_st = SimpleStates::ortho;
                         mouse.SS90R();
-                        x = 2;
+                        x = 1;
                         break;
                     default:
                         break;
@@ -45,9 +45,8 @@ void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
                         mouse.FWD(x);
                         break;
                     case SimpleStates::ortho_L:
-                        simple_current_st = SimpleStates::ortho_L;
-                        mouse.SS90L();
-                        mouse.FWD(1);
+                        simple_current_st = SimpleStates::ortho;
+                        mouse.SS180L();
                         break;
                     case SimpleStates::ortho_R:
                         simple_current_st = SimpleStates::ortho_L;
@@ -64,16 +63,14 @@ void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
                     case SimpleStates::st_init:
                         simple_current_st = SimpleStates::ortho;
                         mouse.turn_right();
-                        mouse.FWD(1);
                         break;
                     case SimpleStates::ortho:
                         simple_current_st = SimpleStates::ortho_R;
                         mouse.FWD(x);
                         break;
                     case SimpleStates::ortho_R:
-                        simple_current_st = SimpleStates::ortho_R;
-                        mouse.SS90R();
-                        mouse.FWD(1);
+                        simple_current_st = SimpleStates::ortho;
+                        mouse.SS180R();
                         break;
                     case SimpleStates::ortho_L:
                         simple_current_st = SimpleStates::ortho_R;

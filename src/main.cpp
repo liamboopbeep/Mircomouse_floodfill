@@ -498,17 +498,17 @@ void set_dir(int _dir, Mouse& mouse) {
     mouse.update_position();
     return;
   }
-  if (_dir == (mouse.direction + 1) % 4) {
-    mouse.update_direction(1);
+  if (_dir == (mouse.direction + 90) % 360) {
+    mouse.update_direction(90);
     mouse.update_position();
     return;
   }
-  if (_dir == (mouse.direction + 2) % 4) {
-    mouse.update_direction(2);
+  if (_dir == (mouse.direction + 180) % 360) {
+    mouse.update_direction(180);
     mouse.update_position();
     return;
   }
-  mouse.update_direction(-1);
+  mouse.update_direction(-90);
   mouse.update_position();
   return;
 }
@@ -517,15 +517,15 @@ int turn_toward(int save_row, int save_col, Mouse& mouse) {
   int _dir = mouse.direction;
   if (mouse.x == save_row) {
     if (mouse.y - save_col == 1) {
-      _dir = 2;
+      _dir = 270;
     } else {
-      _dir = 0;
+      _dir = 90;
     }
   } else {
     if (mouse.x - save_row == 1) {
-      _dir = 3;
+      _dir = 180;
     } else {
-      _dir = 1;
+      _dir = 0;
     }
   }
   mouse.prev_direction = mouse.direction;
@@ -538,13 +538,14 @@ void exec_shortest_path(std::queue<pair<int, int>> shortest_path, Mouse& mouse) 
     turn_toward(shortest_path.front().first, shortest_path.front().second, mouse);
     shortest_path.pop();
 
-    int diff = (mouse.direction - mouse.prev_direction + 4) % 4;
-    if (diff == 1) {
+    int diff = (mouse.direction - mouse.prev_direction + 360) % 360;
+    if (diff == 270) {
       robot_commands += "R";
-    } else if (diff == 3) {
+    } else if (diff == 90) {
       robot_commands += "L";
+    } else {
+      robot_commands += "F";
     }
-    robot_commands += "F";
   }
   robot_commands += "S";
 }
@@ -583,8 +584,8 @@ void start_path_finding(int min_goal_x, int min_goal_y, Mouse& mouse) {
 
 int main(int argc, char *argv[]) {
   Mouse mouse;
-  start_path_finding(7, 7, mouse);
+  //start_path_finding(7, 7, mouse);
   //statemachine(robot_commands);
-  API::ackReset();
-  simplestatemachine(robot_commands, mouse);
+  //API::ackReset();
+  simplestatemachine("FFRFLFLFRRFFRFFFFLFFFFFFFFFFFLLFFFFFFFFFFRFFFFLFFRFRFFFLFFFRFFFLRFFFFRRFFFLLFFRRFFLLFFRRFFFRLLS", mouse);
 }
