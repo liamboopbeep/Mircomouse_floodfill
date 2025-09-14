@@ -2,3 +2,4 @@ untested/
 simulation/
 outputs/
 .prettierignore
+.vscode/

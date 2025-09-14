@@ -15,7 +15,8 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
                 switch (current_st) {
                     case States::st_init:
                         current_st = States::ortho;
-                        x = 1;
+                        x = 0;
+                        mouse.move_forward_half();
                         break;
                     case States::ortho:
                         x++;
@@ -23,22 +24,22 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
                     case States::ortho_L:
                         current_st = States::ortho;
                         mouse.SS90L();
-                        x = 2;
+                        x = 1;
                         break;
                     case States::ortho_R:
                         current_st = States::ortho;
                         mouse.SS90R();
-                        x = 2;
+                        x = 1;
                         break;
                     case States::ortho_LL:
                         current_st = States::ortho;
                         mouse.SS180L();
-                        x = 2;
+                        x = 0;
                         break;
                     case States::ortho_RR:
                         current_st = States::ortho;
                         mouse.SS180R();
-                        x = 2;
+                        x = 0;
                         break;
                     case States::diag_LR:
                         current_st = States::ortho;
