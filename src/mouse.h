@@ -1,6 +1,7 @@
 #pragma once
 
 #include "..\API\API.h"
+#include "..\Control\Control.h"
 
 class Mouse {
 public:
@@ -18,9 +19,28 @@ public:
     void turn_right45();
     void turn_left45();
     void turn_around();
+    // Movement commands
     void FWD(int x);
     void SS90R();
     void SS90L();
     void SS180R();
     void SS180L();
+
+    void DIA(int x);
+
+    // Diagonal Right
+    void DS45R();
+    void DS135R();
+    void SD45R();
+    void SD135R();
+    void DD90R();
+
+
+    // Diagonal Left
+    void DS45L();
+    void DS135L();
+    void SD45L();
+    void SD135L();
+    void DD90L();
+
 };

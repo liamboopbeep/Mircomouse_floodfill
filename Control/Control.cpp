@@ -1,40 +1,60 @@
 #include "Control.h"
-#include "..\src\mouse.cpp"
+#include <iostream>
 
-void FWD(int x) {
-  // Move forward scaled by x
+void Control::FWD(int x) {
+  ;
 }
 
-void SS90L() {
-  // Snap spin 90° left
+void Control::SS90L() {
+  ;
 }
 
-void SS90R() {
-  // Snap spin 90° right
+void Control::SS90R() {
+  ;
 }
 
-void SS180L() {
-  // Snap spin 180° left
+void Control::SS180L() {
+  ;
 }
 
-void SS180R() {
-  // Snap spin 180° right
+void Control::SS180R() {
+  ;
 }
 
-void DIA(int x) {
-  // Diagonal move scaled by x
+void Control::DIA(int x) {
+  ;
 }
 
 // Diagonal Right
-void DS45R() {}
-void DS135R() {}
-void SD45R() {}
-void SD135R() {}
-void DD90R() {}
+void Control::DS45R() {
+  ;
+}
+void Control::DS135R() {
+  ;
+}
+void Control::SD45R() {
+  ;
+}
+void Control::SD135R() {
+  ;
+}
+void Control::DD90R() {
+  ;
+}
 
 // Diagonal Left
-void DS45L() {}
-void DS135L() {}
-void SD45L() {}
-void SD135L() {}
-void DD90L() {}
+void Control::DS45L() {
+  ;
+}
+void Control::DS135L() {
+  ;
+}
+void Control::SD45L() {
+  ;
+}
+void Control::SD135L() {
+  ;
+}
+void Control::DD90L() {
+  ;
+}

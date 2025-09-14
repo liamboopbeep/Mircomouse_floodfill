@@ -68,14 +68,10 @@
           }
 
           void Mouse::FWD(int x) {
-            // if (x == 1){
-            //   std::cerr << "FWD:" << x << std::endl;
-            //   move_forward();
-            //   return;
-            // }
             std::cerr << "FWD:" << x << std::endl;
             if (x <= 0) return;
             move_forward(x);
+            Control::FWD(x);
           }
 
           void Mouse::SS90R() {
@@ -83,6 +79,7 @@
             turn_right45();
             move_forward_half();
             turn_right45();
+            Control::SS90R();
           }
 
           void Mouse::SS90L() {
@@ -90,6 +87,7 @@
             turn_left45();
             move_forward_half();
             turn_left45();
+            Control::SS90L();
           }
 
           void Mouse::SS180R() {
@@ -99,6 +97,7 @@
             turn_right();
             move_forward_half();
             turn_right45();
+            Control::SS180R();
           }
 
           void Mouse::SS180L() {
@@ -108,22 +107,90 @@
             turn_left();
             move_forward_half();
             turn_left45();
+            Control::SS180L();
           }
 
-        //   void DIA(int x) {
-        //     // Diagonal move scaled by x
-        //   }
+          void Mouse::DIA(int x) {
+            std::cerr << "DIA:" << x << std::endl;
+            if (x <= 0) return;
+            move_forward(x);
+            Control::DIA(x);
+          }
 
-        //   // Diagonal Right
-        //   void DS45R() {}
-        //   void DS135R() {}
-        //   void SD45R() {}
-        //   void SD135R() {}
-        //   void DD90R() {}
+          // Diagonal Right
+          void Mouse::DS45R() {
+            std::cerr << "DS45R" << std::endl;
+            turn_right45();
+            move_forward_half();
+            Control::DS45R();
+          }
+          void Mouse::DS135R() {
+            std::cerr << "DS135R" << std::endl;
+            turn_right45();
+            move_forward_half();
+            turn_right();
+            move_forward_half();
+            Control::DS135R();
+          }
+          void Mouse::SD45R() {
+            std::cerr << "SD45R" << std::endl;
+            move_forward_half();
+            turn_right45();
+            Control::SD45R();
+          }
+          void Mouse::SD135R() {
+            std::cerr << "SD135R" << std::endl;
+            move_forward_half();
+            turn_right();
+            move_forward_half();
+            turn_right45();
+            Control::SD135R();
+          }
+          void Mouse::DD90R() {
+            std::cerr << "DD90R" << std::endl;
+            turn_right45();
+            move_forward_half();
+            turn_right();
+            move_forward_half();
+            turn_right45();
+            Control::DD90R();
+          }
 
-        //   // Diagonal Left
-        //   void DS45L() {}
-        //   void DS135L() {}
-        //   void SD45L() {}
-        //   void SD135L() {}
-        //   void DD90L() {}
+          // Diagonal Left
+          void Mouse::DS45L() {
+            std::cerr << "DS45L" << std::endl;
+            turn_left45();
+            move_forward_half();
+            Control::DS45L();
+          }
+          void Mouse::DS135L() {
+            std::cerr << "DS135L" << std::endl;
+            turn_left45();
+            move_forward_half();
+            turn_left();
+            move_forward_half();
+            Control::DS135L();
+          }
+          void Mouse::SD45L() {
+            std::cerr << "SD45L" << std::endl;
+            move_forward_half();
+            turn_left45();
+            Control::SD45L();
+          }
+          void Mouse::SD135L() {
+            std::cerr << "SD135L" << std::endl;
+            move_forward_half();
+            turn_left();
+            move_forward_half();
+            turn_left45();
+            Control::SD135L();
+          }
+          void Mouse::DD90L() {
+            std::cerr << "DD90L" << std::endl;
+            turn_left45();
+            move_forward_half();
+            turn_left();
+            move_forward_half();
+            turn_left45();
+            Control::DD90L();
+          }
