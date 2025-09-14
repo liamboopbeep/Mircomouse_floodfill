@@ -587,5 +587,6 @@ int main(int argc, char *argv[]) {
   //start_path_finding(7, 7, mouse);
   //statemachine(robot_commands);
   //API::ackReset();
+  std::cerr << "FFRFLFLFRRFFRFFFFLFFFFFFFFFFFLLFFFFFFFFFFRFFFFLFFRFRFFFLFFFRFFFLRFFFFRRFFFLLFFRRFFLLFFRRFFFRLLS" << std::endl;
   simplestatemachine("FFRFLFLFRRFFRFFFFLFFFFFFFFFFFLLFFFFFFFFFFRFFFFLFFRFRFFFLFFFRFFFLRFFFFRRFFFLLFFRRFFLLFFRRFFFRLLS", mouse);
 }

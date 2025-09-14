@@ -13,7 +13,8 @@ void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
                 switch (simple_current_st) {
                     case SimpleStates::st_init:
                         simple_current_st = SimpleStates::ortho;
-                        x = 1;
+                        x = 0;
+                        mouse.move_forward_half();
                         break;
                     case SimpleStates::ortho:
                         simple_current_st = SimpleStates::ortho;
@@ -47,11 +48,11 @@ void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
                     case SimpleStates::ortho_L:
                         simple_current_st = SimpleStates::ortho;
                         mouse.SS180L();
+                        x = 0;
                         break;
                     case SimpleStates::ortho_R:
                         simple_current_st = SimpleStates::ortho_L;
                         mouse.SS90R();
-                        mouse.FWD(1);
                         break;
                     default:
                         break;
@@ -71,11 +72,11 @@ void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
                     case SimpleStates::ortho_R:
                         simple_current_st = SimpleStates::ortho;
                         mouse.SS180R();
+                        x = 0;
                         break;
                     case SimpleStates::ortho_L:
                         simple_current_st = SimpleStates::ortho_R;
                         mouse.SS90L();
-                        mouse.FWD(1);
                         break;
                     default:
                         break;
@@ -90,6 +91,7 @@ void simplestatemachine(const std::string& robot_commands, Mouse& mouse) {
                     case SimpleStates::ortho:
                         simple_current_st = SimpleStates::st_stop;
                         mouse.FWD(x);
+                        mouse.move_forward_half();
                         break;
                     case SimpleStates::ortho_L:
                         simple_current_st = SimpleStates::st_stop;

@@ -68,14 +68,14 @@
           }
 
           void Mouse::FWD(int x) {
-            if (x == 1){
-              std::cerr << "FWD:" << x << std::endl;
-              move_forward();
-              return;
-            }
+            // if (x == 1){
+            //   std::cerr << "FWD:" << x << std::endl;
+            //   move_forward();
+            //   return;
+            // }
             std::cerr << "FWD:" << x << std::endl;
-            move_forward(x-1);
-            move_forward_half();
+            if (x <= 0) return;
+            move_forward(x);
           }
 
           void Mouse::SS90R() {
