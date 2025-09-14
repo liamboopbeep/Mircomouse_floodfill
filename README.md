@@ -8,7 +8,5 @@ Micromouse Simulator API wrappers (for running in simulator)
 Core Flood-Fill algorithm implementation
 ## Statemachine/
 State machine logic
-- statemachine
-Version with diagonal movement support
-- statemachine_simplified
-Version without diagonal movement
+- statemachine - Version with diagonal movement support
+- statemachine_simplified - Version without diagonal movement
