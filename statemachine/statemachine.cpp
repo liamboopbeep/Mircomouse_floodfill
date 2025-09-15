@@ -34,36 +34,38 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
                     case States::ortho_LL:
                         current_st = States::ortho;
                         mouse.SS180L();
-                        x = 0;
+                        x = 1;
                         break;
                     case States::ortho_RR:
                         current_st = States::ortho;
                         mouse.SS180R();
-                        x = 0;
+                        x = 1;
                         break;
                     case States::diag_LR:
                         current_st = States::ortho;
                         mouse.DIA(x);
+                        mouse.move_forward_half();
                         mouse.DS45R();
-                        x = 2;
+                        x = 1;
                         break;
                     case States::diag_RL:
                         current_st = States::ortho;
                         mouse.DIA(x);
+                        mouse.move_forward_half();
                         mouse.DS45L();
-                        x = 2;
+                        x = 1;
                         break;
                     case States::diag_LL:
                         current_st = States::ortho;
                         mouse.DIA(x);
                         mouse.DS135L();
-                        x = 2;
+                        x = 1;
                         break;
                     case States::diag_RR:
                         current_st = States::ortho;
                         mouse.DIA(x);
                         mouse.DS135R();
-                        x = 2;
+                        x = 1;
                         break;
                     default:
                         break;
@@ -72,6 +74,10 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
 
             case 'L':
                 switch (current_st) {
+                    case States::st_init:
+                        current_st = States::ortho;
+                        mouse.move_forward_half();
+                        break;
                     case States::ortho:
                         current_st = States::ortho_L;
                         mouse.FWD(x);
@@ -82,12 +88,12 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
                     case States::ortho_R:
                         current_st = States::diag_RL;
                         mouse.SD45R();
-                        x = 2;
+                        x = 1;
                         break;
                     case States::ortho_RR:
                         current_st = States::diag_RL;
                         mouse.SD135R();
-                        x = 2;
+                        x = 0;
                         break;
                     case States::diag_LR:
                         current_st = States::diag_RL;
@@ -100,7 +106,7 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
                         current_st = States::diag_RL;
                         mouse.DIA(x);
                         mouse.DD90R();
-                        x = 2;
+                        x = 0;
                         break;
                     default:
                         break;
@@ -109,6 +115,10 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
 
             case 'R':
                 switch (current_st) {
+                    case States::st_init:
+                        current_st = States::ortho;
+                        mouse.move_forward_half();
+                        break;
                     case States::ortho:
                         current_st = States::ortho_R;
                         mouse.FWD(x);
@@ -119,12 +129,12 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
                     case States::ortho_L:
                         current_st = States::diag_LR;
                         mouse.SD45L();
-                        x = 2;
+                        x = 1;
                         break;
                     case States::ortho_LL:
                         current_st = States::diag_LR;
                         mouse.SD135L();
-                        x = 2;
+                        x = 0;
                         break;
                     case States::diag_RL:
                         current_st = States::diag_LR;
@@ -137,7 +147,7 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
                         current_st = States::diag_LR;
                         mouse.DIA(x);
                         mouse.DD90L();
-                        x = 2;
+                        x = 0;
                         break;
                     default:
                         break;
@@ -156,46 +166,46 @@ void statemachine(const std::string& robot_commands, Mouse& mouse) {
                     case States::ortho_L:
                         current_st = States::st_stop;
                         mouse.SS90L();
-                        mouse.FWD(1);
+                        mouse.move_forward_half();
                         break;
                     case States::ortho_R:
                         current_st = States::st_stop;
                         mouse.SS90R();
-                        mouse.FWD(1);
+                        mouse.move_forward_half();
                         break;
                     case States::ortho_LL:
                         current_st = States::st_stop;
-                        mouse.SS180L();
-                        mouse.FWD(1);
+                        mouse.SD135L();
+                        mouse.move_forward();
                         break;
                     case States::ortho_RR:
                         current_st = States::st_stop;
-                        mouse.SS180R();
-                        mouse.FWD(1);
+                        mouse.SD135R();
+                        mouse.move_forward();
                         break;
                     case States::diag_LR:
                         current_st = States::st_stop;
                         mouse.DIA(x);
                         mouse.DS45R();
-                        mouse.FWD(1);
+                        mouse.move_forward_half();
                         break;
                     case States::diag_RL:
                         current_st = States::st_stop;
                         mouse.DIA(x);
                         mouse.DS45L();
-                        mouse.FWD(1);
+                        mouse.move_forward_half();
                         break;
                     case States::diag_LL:
                         current_st = States::st_stop;
                         mouse.DIA(x);
                         mouse.DS135L();
-                        mouse.FWD(1);
+                        mouse.move_forward_half();
                         break;
                     case States::diag_RR:
                         current_st = States::st_stop;
                         mouse.DIA(x);
                         mouse.DS135R();
-                        mouse.FWD(1);
+                        mouse.move_forward_half();
                         break;
                     default:
                         break;

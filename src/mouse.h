@@ -13,7 +13,7 @@ public:
     void update_position(float dist = 1);
     void update_direction(int turn_direction);
     void move_forward(int dist = 1);
-    void move_forward_half();
+    void move_forward_half(int dist = 1);
     void turn_right();
     void turn_left();
     void turn_right45();

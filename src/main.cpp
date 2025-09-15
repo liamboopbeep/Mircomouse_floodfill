@@ -7,6 +7,7 @@
 #include "..\API\API.h"
 //#include "..\statemachine\statemachine.cpp"
 #include "..\statemachine\statemachine_simplified.h"
+#include "..\statemachine\statemachine.h"
 #include "mouse.h"
 
 using namespace std;
@@ -250,29 +251,28 @@ cell_info cell_direction_adjust(cell_info cell) {
   return cell_new;
 }
 
-void go_to_cell(int &angle_now, int dir) {
+void go_to_cell(int &angle_now, int dir, Mouse &mouse) {
   switch (dir) {
     case -1:
       log("not dir");
       break;
     case UP:
-      API::moveForward();
+      mouse.move_forward();
       break;
     case DOWN:
       angle_now -= 180;
-      API::turnRight();
-      API::turnRight();
-      API::moveForward();
+      mouse.turn_around();
+      mouse.move_forward();
       break;
     case LEFT:
       angle_now += 90;
-      API::turnLeft();
-      API::moveForward();
+      mouse.turn_left();
+      mouse.move_forward();
       break;
     case RIGHT:
       angle_now -= 90;
-      API::turnRight();
-      API::moveForward();
+      mouse.turn_right();
+      mouse.move_forward();
       break;
     default:
       break;
@@ -369,7 +369,7 @@ cell_info update_walls(int angle_now, int row, int col) {
   return new_cell;
 }
 
-coord floodfill(coord start, coord dest, std::vector<std::vector<int>> &arr, int &angle_now) {
+coord floodfill(coord start, coord dest, std::vector<std::vector<int>> &arr, int &angle_now, Mouse &mouse) {
   std::queue<coord> path_queue;
   path_queue.push(start);
   coord cur = start;
@@ -391,7 +391,7 @@ coord floodfill(coord start, coord dest, std::vector<std::vector<int>> &arr, int
       next_step = get_min_neighbour(new_cell, cur, arr, 1);
       path_queue.push(next_step);
       stack_flood.push(next_step);
-      go_to_cell(angle_now, next_step.value);
+      go_to_cell(angle_now, next_step.value, mouse);
       path_distance_value_find++;
     } else {
       log("empty Queue- break");
@@ -416,7 +416,7 @@ void init_maze() {
     }
   }
 }
-void go_to_cell_shorted(int &angle, int dir) {
+void go_to_cell_shorted(int &angle, int dir, Mouse &mouse) {
   int new_dir = dir;
   switch (angle) {
     case 90:
@@ -444,7 +444,7 @@ void go_to_cell_shorted(int &angle, int dir) {
         new_dir = 2;
       break;
   }
-  go_to_cell(angle, new_dir);
+  go_to_cell(angle, new_dir, mouse);
 }
 
 std::queue<pair<int, int>> shorted_path_go(std::vector<std::vector<int>> &arr, int angle_now, coord start, coord dest)  // vẽ ra con đường ngắn nhất
@@ -571,21 +571,19 @@ void start_path_finding(int min_goal_x, int min_goal_y, Mouse& mouse) {
   coord new_coord;
   //init
 
-  new_coord = floodfill(start, dest, arr, angle_now);
+  new_coord = floodfill(start, dest, arr, angle_now, mouse);
   init_flood_start(arr, 0, 0, 1);
   std::cerr << "done2" << std::endl;
-  new_coord = floodfill(new_coord, start, arr, angle_now);
+  new_coord = floodfill(new_coord, start, arr, angle_now, mouse);
   init_flood_start(arr, min_goal_x, min_goal_y, 2);
-  API::turnLeft();
-  API::turnLeft();
+  mouse.turn_around();
   exec_shortest_path(shorted_path_go(arr, angle_now, new_coord, dest), mouse);
   std::cerr << robot_commands << endl;
 }
 
 int main(int argc, char *argv[]) {
   Mouse mouse;
-  //start_path_finding(7, 7, mouse);
-  //statemachine(robot_commands);
-  //API::ackReset();
-  simplestatemachine(robot_commands, mouse);
+  start_path_finding(7, 7, mouse);
+  //simplestatemachine(robot_commands, mouse);
+  statemachine(robot_commands, mouse);
 }
