@@ -174,7 +174,7 @@ void update_wall_debug(std::vector<std::vector<int>> &arr) {
       } else
         API::clearColor(i, j);  // g-green r-red b-Blue
       if (maze.cells[i][j].dead == true) {
-        API::setText(i, j, "Dead");  // g-green r-red b-Blue
+        API::setText(i, j, "DE");  // g-green r-red b-Blue
         API::setColor(i, j, 'r');    // g-green r-red b-Blue
 
       }
@@ -351,7 +351,7 @@ cell_info update_walls(int angle_now, int row, int col) {
   new_cell.visited = 1;
   maze.cells[row][col] = cell_direction_adjust(new_cell);
   if (new_cell.walls[UP] == 1 && new_cell.walls[LEFT] == 1 && new_cell.walls[RIGHT] == 1 && row != 0 && col != 0) {
-    log("dead");
+    log("DE");
     maze.cells[row][col].dead = 1;
   }
   for (int i = 0; i < 4; i++) {
@@ -402,7 +402,7 @@ coord floodfill(coord start, coord dest, std::vector<std::vector<int>> &arr, int
   while (!path_queue.empty()) path_queue.pop();
   // new_cell=update_walls(angle_now,cur.row,cur.col);
 
-  std::cerr << "total_cost:" << path_distance_value_find << std::endl;
+  std::cerr << "Total Distance:" << path_distance_value_find << std::endl;
   coord p_return = {next_step.row, next_step.col, 0};
   return p_return;
 }
@@ -573,7 +573,7 @@ void start_path_finding(int min_goal_x, int min_goal_y, Mouse& mouse) {
 
   new_coord = floodfill(start, dest, arr, angle_now, mouse);
   init_flood_start(arr, 0, 0, 1);
-  std::cerr << "done2" << std::endl;
+  std::cerr << "RouteFound" << std::endl;
   new_coord = floodfill(new_coord, start, arr, angle_now, mouse);
   init_flood_start(arr, min_goal_x, min_goal_y, 2);
   mouse.turn_around();
